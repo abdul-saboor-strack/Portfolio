@@ -69,13 +69,7 @@ export default function SkillsSection({ skills }) {
           className={`glass ${isInView ? 'reveal in' : 'reveal'}`}
           style={{ padding: 18 }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(12, 1fr)',
-              gap: 14,
-            }}
-          >
+          <div className="skillsGrid">
             {skillItems.map((s) => {
               const level = Math.max(0, Math.min(100, Number(s.level) || 0))
               const code = String(s.code || s.name || '').slice(0, 6).toUpperCase()
@@ -85,8 +79,8 @@ export default function SkillsSection({ skills }) {
                   key={s.name}
                   whileHover={{ y: -3, scale: 1.01 }}
                   transition={{ duration: 0.2 }}
+                  className="skillCard"
                   style={{
-                    gridColumn: 'span 6',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',

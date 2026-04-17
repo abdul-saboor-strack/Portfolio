@@ -173,13 +173,7 @@ export default function ProjectsSection({ projects, onOpenProject }) {
         </div>
 
         <div ref={ref} className="glass" style={{ padding: 18 }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(12, 1fr)',
-              gap: 14,
-            }}
-          >
+          <div className="projectsGrid">
             {projectItems.map((p, i) => (
               <Motion.div
                 key={p.id}
@@ -190,7 +184,7 @@ export default function ProjectsSection({ projects, onOpenProject }) {
                   hide: { opacity: 0, y: 20 },
                 }}
                 transition={{ duration: 0.55, delay: isInView ? i * 0.06 : 0 }}
-                style={{ gridColumn: 'span 6' }}
+                className="projectCard"
               >
                 <ProjectTiltCard project={p} onOpen={onOpenProject} />
               </Motion.div>

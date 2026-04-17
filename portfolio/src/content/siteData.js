@@ -31,7 +31,7 @@
         id: 'ecommerce',
         title: 'E-commerce Website',
         description: 'A full-featured e-commerce web application with product listings and user interaction.',
-        image: '/images/portfolio-pic.jpeg',
+        image: 'https://via.placeholder.com/1200x800/00f0ff/000000?text=E-commerce+Project',
         liveUrl: '#', // yahan apni deployed link daalna
         repoUrl: '#', // yahan GitHub link daalna
         details: [
@@ -45,7 +45,7 @@
         id: 'hospital-system',
         title: 'Hospital Management System',
         description: 'A DSA-based system for managing hospital operations and records.',
-        image: '/images/hospital.png',
+        image: 'https://via.placeholder.com/1200x800/8a2be2/ffffff?text=Hospital+System',
         liveUrl: '#',
         repoUrl: '#',
         details: [

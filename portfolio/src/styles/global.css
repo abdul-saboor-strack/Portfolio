@@ -142,6 +142,68 @@ textarea {
   padding: 0 22px;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+}
+
+/* Projects grid */
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .projectsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.projectCard {
+  grid-column: span 6;
+}
+
+@media (max-width: 768px) {
+  .projectCard {
+    grid-column: span 1;
+  }
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.skillCard {
+  grid-column: span 6;
+}
+
+@media (max-width: 768px) {
+  .skillsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .skillCard {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .section {
   padding: 92px 0;
   position: relative;
