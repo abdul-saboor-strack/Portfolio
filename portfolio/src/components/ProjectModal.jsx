@@ -15,19 +15,19 @@ function ImageCarousel({ images, title }) {
   if (!images || images.length === 0) return null
 
   return (
-    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
+    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', contain: 'layout' }}>
       {/* Slides */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'rgba(10,10,15,0.55)' }}>
-        <AnimatePresence mode="wait">
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'rgba(10,10,15,0.55)', overflow: 'hidden' }}>
+        <AnimatePresence mode="wait" initial={false}>
           <Motion.img
             key={active}
             src={images[active]}
             alt={`${title} screenshot ${active + 1}`}
             loading="lazy"
-            initial={reduced ? false : { opacity: 0, x: 20 }}
-            animate={reduced ? false : { opacity: 1, x: 0 }}
-            exit={reduced ? false : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.22, ease: 'easeInOut' }}
+            initial={reduced ? false : { opacity: 0 }}
+            animate={reduced ? false : { opacity: 1 }}
+            exit={reduced ? false : { opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
               inset: 0,
