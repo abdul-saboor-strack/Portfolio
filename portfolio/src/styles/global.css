@@ -120,6 +120,83 @@ textarea {
   backdrop-filter: blur(12px);
 }
 
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  flex-wrap: wrap;
+}
+
+.headerBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.headerNav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.headerNav .btn,
+.headerBrand .btn {
+  padding: 8px 10px;
+}
+
+@media (max-width: 768px) {
+  .headerBar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .headerBrand {
+    justify-content: space-between;
+  }
+  .headerNav {
+    justify-content: center;
+    gap: 8px;
+  }
+  .headerNav .btn,
+  .headerBrand .btn {
+    font-size: 12px;
+    padding: 8px 10px;
+    min-width: 90px;
+  }
+  .headerNav {
+    width: 100%;
+  }
+  .headerNav .btn {
+    flex: 1 1 calc(50% - 8px);
+    white-space: nowrap;
+  }
+  .mainContent {
+    padding-top: 140px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerNav .btn,
+  .headerBrand .btn {
+    font-size: 11px;
+    padding: 7px 10px;
+    min-width: 72px;
+  }
+  .headerNav {
+    gap: 6px;
+  }
+  .headerNav .btn {
+    flex: 1 1 100%;
+  }
+}
+
 .neonBorder {
   position: relative;
 }

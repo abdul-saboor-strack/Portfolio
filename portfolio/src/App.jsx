@@ -99,9 +99,9 @@ export default function App() {
                 <button
                   key={item.id}
                   type="button"
-                  className="btn btnSecondary"
+                  className="btn btnSecondary headerButton"
                   onClick={() => scrollToId(item.id)}
-                  style={{ padding: '8px 10px', borderRadius: 14, fontWeight: 900, fontSize: 13 }}
+                  style={{ padding: '8px 10px', borderRadius: 14, fontWeight: 900 }}
                 >
                   {item.label}
                 </button>
