@@ -2,6 +2,12 @@ import { useMemo, useState } from 'react'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import emailjs from '@emailjs/browser'
 
+const emailJsConfig = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+}
+
 function SocialIcon({ type }) {
   const common = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }
   if (type === 'github') {
@@ -33,6 +39,7 @@ export default function ContactSection({ contact, social }) {
   const reduced = usePrefersReducedMotion()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState(null)
+  const [sending, setSending] = useState(false)
 
   const socials = useMemo(() => social ?? [], [social])
 
@@ -47,34 +54,44 @@ export default function ContactSection({ contact, social }) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    if (sending) return
+
     const err = validate()
     if (err) {
       setStatus({ ok: false, text: err })
       return
     }
 
+    if (!emailJsConfig.serviceId || !emailJsConfig.templateId || !emailJsConfig.publicKey) {
+      setStatus({ ok: false, text: 'Email service is not configured yet. Please add EmailJS keys.' })
+      return
+    }
+
+    setSending(true)
     setStatus({ ok: true, text: 'Sending message...' })
 
     try {
-      // Replace these with your EmailJS service details
-      const serviceId = 'your_service_id'
-      const templateId = 'your_template_id'
-      const publicKey = 'your_public_key'
-
       const templateParams = {
         from_name: form.name,
         from_email: form.email,
         message: form.message,
-        to_email: contact?.email || 'your-email@example.com',
+        to_email: contact?.email || '',
       }
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+      await emailjs.send(
+        emailJsConfig.serviceId,
+        emailJsConfig.templateId,
+        templateParams,
+        emailJsConfig.publicKey,
+      )
 
       setStatus({ ok: true, text: 'Message sent successfully!' })
       setForm({ name: '', email: '', message: '' })
     } catch (error) {
       console.error('Email send error:', error)
       setStatus({ ok: false, text: 'Failed to send message. Please try again.' })
+    } finally {
+      setSending(false)
     }
   }
 
@@ -161,13 +178,16 @@ export default function ContactSection({ contact, social }) {
                   <button
                     type="submit"
                     className="btn"
+                    disabled={sending}
                     style={{
                       padding: '12px 16px',
                       borderRadius: 14,
+                      opacity: sending ? 0.75 : 1,
+                      cursor: sending ? 'wait' : 'pointer',
                       transition: reduced ? 'none' : undefined,
                     }}
                   >
-                    Send Message
+                    {sending ? 'Sending...' : 'Send Message'}
                   </button>
                   <div
                     aria-live="polite"
