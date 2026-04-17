@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [passInput, setPassInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [showExport, setShowExport] = useState(false)
 
   const hasPassword = Boolean(storedPassword)
 
@@ -601,16 +602,48 @@ export default function AdminPage() {
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap', marginTop: 18 }}>
             <button
               type="button"
+              className="btn btnSecondary"
+              onClick={() => setShowExport(true)}
+              style={{ padding: '12px 16px', borderRadius: 14, fontWeight: 900 }}
+            >
+              Export siteData.js
+            </button>
+            <button
+              type="button"
               className="btn"
               onClick={onSave}
               disabled={busy}
               style={{ padding: '12px 16px', borderRadius: 14, fontWeight: 900 }}
             >
-              {busy ? 'Saving...' : 'Save changes'}
+              {busy ? 'Saving...' : 'Save changes (Local Preview)'}
             </button>
           </div>
         </div>
       </div>
+
+      {showExport && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999, display: 'grid', placeItems: 'center', padding: 18, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}>
+          <div className="glass neonBorder" style={{ width: 'min(700px, 100%)', padding: 24, borderRadius: 20, display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
+            <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 12 }}>Export your data</div>
+            <p style={{ color: 'var(--muted)', fontSize: 13.5, marginBottom: 16 }}>
+              The admin panel only saves preview data in this browser. To make the changes live for everyone (including on mobile), copy the code below and completely replace the contents of your <code>src/content/siteData.js</code> file, then push it to GitHub.
+            </p>
+            <textarea
+              readOnly
+              value={`export const siteData = ${JSON.stringify(draft, null, 2)};`}
+              style={{
+                width: '100%', flexGrow: 1, minHeight: 250, padding: 12, borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)', background: '#111', color: '#00f0ff',
+                fontFamily: 'monospace', fontSize: 12, resize: 'none', marginBottom: 16
+              }}
+              onFocus={(e) => e.target.select()}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button className="btn" onClick={() => setShowExport(false)} style={{ padding: '10px 16px' }}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

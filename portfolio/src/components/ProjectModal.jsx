@@ -252,14 +252,14 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
               {/* Body */}
               <div style={{ borderTop: '1px solid rgba(255,255,255,0.10)' }}>
-                <div style={{ padding: 16, display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 14 }}>
+                <div className="responsiveGrid" style={{ padding: 16 }}>
                   {/* Image carousel */}
-                  <div style={{ gridColumn: 'span 7', minHeight: 180 }}>
+                  <div className="responsiveCol-7" style={{ minHeight: 180 }}>
                     <ImageCarousel images={resolveImages(project)} title={project.title} />
                   </div>
 
                   {/* Info panel */}
-                  <div style={{ gridColumn: 'span 5', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div className="responsiveCol-5" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <div style={{ color: 'var(--muted)', lineHeight: 1.7 }}>{project.description}</div>
                     {project.details?.length ? (
                       <div>
