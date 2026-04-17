@@ -18,16 +18,12 @@ function ImageCarousel({ images, title }) {
     <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', contain: 'layout' }}>
       {/* Slides */}
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'rgba(10,10,15,0.55)', overflow: 'hidden' }}>
-        <AnimatePresence mode="wait" initial={false}>
-          <Motion.img
-            key={active}
-            src={images[active]}
-            alt={`${title} screenshot ${active + 1}`}
-            loading="lazy"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={reduced ? false : { opacity: 1 }}
-            exit={reduced ? false : { opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+        {images.map((img, i) => (
+          <img
+            key={i}
+            src={img}
+            alt={`${title} screenshot ${i + 1}`}
+            loading={i === 0 ? "eager" : "lazy"}
             style={{
               position: 'absolute',
               inset: 0,
@@ -35,9 +31,12 @@ function ImageCarousel({ images, title }) {
               height: '100%',
               objectFit: 'cover',
               display: 'block',
+              opacity: i === active ? 1 : 0,
+              transition: reduced ? 'none' : 'opacity 250ms ease-in-out',
+              zIndex: i === active ? 1 : 0,
             }}
           />
-        </AnimatePresence>
+        ))}
 
         {/* Counter badge */}
         {images.length > 1 && (
