@@ -1,12 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
-import emailjs from '@emailjs/browser'
-
-const emailJsConfig = {
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-}
 
 function SocialIcon({ type }) {
   const common = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }
@@ -37,57 +30,7 @@ function SocialIcon({ type }) {
 
 export default function ContactSection({ contact, social }) {
   const reduced = usePrefersReducedMotion()
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [sending, setSending] = useState(false)
-
   const socials = useMemo(() => social ?? [], [social])
-
-  const setField = (k, v) => setForm((prev) => ({ ...prev, [k]: v }))
-
-  const validate = () => {
-    if (!form.name.trim()) return 'Please enter your name.'
-    if (!form.email.trim() || !/^\S+@\S+\.\S+$/.test(form.email.trim())) return 'Please enter a valid email.'
-    if (form.message.trim().length < 10) return 'Please write a short message (10+ characters).'
-    return null
-  }
-
-  const onSubmit = async (e) => {
-    e.preventDefault()
-    if (sending) return
-
-    const err = validate()
-    if (err) {
-      return
-    }
-
-    if (!emailJsConfig.serviceId || !emailJsConfig.templateId || !emailJsConfig.publicKey) {
-      return
-    }
-
-    setSending(true)
-
-    try {
-      const templateParams = {
-        from_name: form.name,
-        from_email: form.email,
-        message: form.message,
-        to_email: contact?.email || '',
-      }
-
-      await emailjs.send(
-        emailJsConfig.serviceId,
-        emailJsConfig.templateId,
-        templateParams,
-        emailJsConfig.publicKey,
-      )
-
-      setForm({ name: '', email: '', message: '' })
-    } catch (error) {
-      console.error('Email send error:', error)
-    } finally {
-      setSending(false)
-    }
-  }
 
   return (
     <section id="contact" className="section">
@@ -100,137 +43,46 @@ export default function ContactSection({ contact, social }) {
         </div>
 
         <div className="glass" style={{ padding: 18 }}>
-          <div className="responsiveGrid" style={{ alignItems: 'start' }}>
-            <div className="responsiveCol-7">
-              <style>{`
-                .contactField:focus {
-                  outline: none;
-                  border-color: rgba(0,240,255,0.55) !important;
-                  box-shadow: 0 0 0 3px rgba(0,240,255,0.15);
-                }
-              `}</style>
-              <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div className="responsiveGrid">
-                  <div className="responsiveCol-6">
-                    <label style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginBottom: 8 }}>Name</label>
-                    <input
-                      className="contactField"
-                      value={form.name}
-                      onChange={(e) => setField('name', e.target.value)}
-                      placeholder="Your name"
-                      style={{
-                        width: '100%',
-                        padding: '12px 12px',
-                        borderRadius: 14,
-                        border: '1px solid rgba(255,255,255,0.12)',
-                        background: 'rgba(255,255,255,0.03)',
-                        color: 'var(--text)',
-                      }}
-                    />
-                  </div>
-                  <div className="responsiveCol-6">
-                    <label style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginBottom: 8 }}>Email</label>
-                    <input
-                      className="contactField"
-                      value={form.email}
-                      onChange={(e) => setField('email', e.target.value)}
-                      placeholder="you@domain.com"
-                      style={{
-                        width: '100%',
-                        padding: '12px 12px',
-                        borderRadius: 14,
-                        border: '1px solid rgba(255,255,255,0.12)',
-                        background: 'rgba(255,255,255,0.03)',
-                        color: 'var(--text)',
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginBottom: 8 }}>Message</label>
-                  <textarea
-                    className="contactField"
-                    value={form.message}
-                    onChange={(e) => setField('message', e.target.value)}
-                    placeholder="Tell me about your project..."
-                    rows={5}
-                    style={{
-                      width: '100%',
-                      padding: '12px 12px',
-                      borderRadius: 14,
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      background: 'rgba(255,255,255,0.03)',
-                      color: 'var(--text)',
-                      resize: 'vertical',
-                      minHeight: 140,
-                    }}
-                  />
-                </div>
-
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-                  <button
-                    type="submit"
-                    className="btn"
-                    disabled={sending}
-                    style={{
-                      padding: '12px 16px',
-                      borderRadius: 14,
-                      opacity: sending ? 0.75 : 1,
-                      cursor: sending ? 'wait' : 'pointer',
-                      transition: reduced ? 'none' : undefined,
-                    }}
-                  >
-                    Send Message
-                  </button>
-                </div>
-              </form>
+          <div className="glass2" style={{ padding: 16, maxWidth: 480 }}>
+            <div style={{ fontWeight: 900, fontFamily: 'Poppins,Orbitron,Inter,system-ui,sans-serif', fontSize: 16 }}>Social</div>
+            <div style={{ color: 'var(--muted)', marginTop: 8, lineHeight: 1.7, fontSize: 13.5 }}>
+              Find me online or email me directly.
             </div>
 
-            <div className="responsiveCol-5">
-              <div className="glass2" style={{ padding: 16 }}>
-                <div style={{ fontWeight: 900, fontFamily: 'Poppins,Orbitron,Inter,system-ui,sans-serif', fontSize: 16 }}>Social</div>
-                <div style={{ color: 'var(--muted)', marginTop: 8, lineHeight: 1.7, fontSize: 13.5 }}>
-                  Find me online or email me directly.
-                </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
+              {socials.map((s) => (
+                <a
+                  key={s.id}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btnSecondary"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '12px 14px',
+                    borderRadius: 16,
+                    fontWeight: 900,
+                  }}
+                  onClick={(e) => {
+                    if (reduced) e.currentTarget.blur?.()
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ color: 'rgba(0,240,255,0.9)', display: 'inline-flex' }}>
+                      <SocialIcon type={s.icon} />
+                    </span>
+                    {s.label}
+                  </span>
+                  <span style={{ color: 'var(--muted)', fontSize: 12 }}>Open</span>
+                </a>
+              ))}
+            </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
-                  {socials.map((s) => (
-                    <a
-                      key={s.id}
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btnSecondary"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '12px 14px',
-                        borderRadius: 16,
-                        fontWeight: 900,
-                      }}
-                      onClick={(e) => {
-                        // Keep interaction responsive even with reduced-motion settings.
-                        if (reduced) e.currentTarget.blur?.()
-                      }}
-                    >
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ color: 'rgba(0,240,255,0.9)', display: 'inline-flex' }}>
-                          <SocialIcon type={s.icon} />
-                        </span>
-                        {s.label}
-                      </span>
-                      <span style={{ color: 'var(--muted)', fontSize: 12 }}>Open</span>
-                    </a>
-                  ))}
-                </div>
-
-                <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.10)' }}>
-                  <div style={{ color: 'var(--muted)', fontSize: 12.5 }}>Email</div>
-                  <div style={{ fontWeight: 900, marginTop: 6, fontFamily: 'Inter,system-ui,sans-serif' }}>{contact?.email}</div>
-                </div>
-              </div>
+            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.10)' }}>
+              <div style={{ color: 'var(--muted)', fontSize: 12.5 }}>Email</div>
+              <div style={{ fontWeight: 900, marginTop: 6, fontFamily: 'Inter,system-ui,sans-serif' }}>{contact?.email}</div>
             </div>
           </div>
         </div>
@@ -238,4 +90,3 @@ export default function ContactSection({ contact, social }) {
     </section>
   )
 }
-
