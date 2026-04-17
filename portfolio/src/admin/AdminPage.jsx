@@ -305,34 +305,96 @@ export default function AdminPage() {
                 <div key={p.id ?? idx} className="glass2" style={{ padding: 16 }}>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 12 }}>
                     <div style={{ gridColumn: 'span 4' }}>
-                      <div style={{ fontWeight: 900, marginBottom: 10 }}>Image</div>
-                      {p.image ? (
-                        <img
-                          src={p.image}
-                          alt="Project preview"
-                          style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 14, border: '1px solid rgba(255,255,255,0.12)' }}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div style={{ color: 'var(--muted)', fontSize: 12.5, lineHeight: 1.6 }}>No image yet.</div>
-                      )}
+                      <div style={{ fontWeight: 900, marginBottom: 10 }}>Images</div>
+
+                      {/* Thumbnail strip */}
+                      {(() => {
+                        const imgs = p.images?.length ? p.images : p.image ? [p.image] : []
+                        return imgs.length > 0 ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            {imgs.map((src, imgIdx) => (
+                              <div key={imgIdx} style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
+                                <img
+                                  src={src}
+                                  alt={`Project image ${imgIdx + 1}`}
+                                  loading="lazy"
+                                  style={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }}
+                                />
+                                {imgIdx === 0 && (
+                                  <div style={{
+                                    position: 'absolute', top: 6, left: 6,
+                                    background: 'rgba(0,240,255,0.85)', color: '#000',
+                                    fontSize: 10, fontWeight: 900, padding: '2px 8px',
+                                    borderRadius: 999, letterSpacing: 0.3,
+                                  }}>THUMBNAIL</div>
+                                )}
+                                <button
+                                  type="button"
+                                  aria-label={`Remove image ${imgIdx + 1}`}
+                                  onClick={() =>
+                                    setDraft((prev) => {
+                                      const next = [...(prev.projects ?? [])]
+                                      const updatedImgs = (next[idx].images ?? [next[idx].image]).filter((_, ii) => ii !== imgIdx)
+                                      next[idx] = {
+                                        ...next[idx],
+                                        images: updatedImgs,
+                                        image: updatedImgs[0] ?? '',
+                                      }
+                                      return { ...prev, projects: next }
+                                    })
+                                  }
+                                  style={{
+                                    position: 'absolute', top: 6, right: 6,
+                                    background: 'rgba(255,60,60,0.85)', color: '#fff',
+                                    border: 'none', borderRadius: 999,
+                                    width: 24, height: 24, cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: 14, fontWeight: 900, lineHeight: 1,
+                                  }}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div style={{ color: 'var(--muted)', fontSize: 12.5, lineHeight: 1.6, marginBottom: 6 }}>No images yet.</div>
+                        )
+                      })()}
+
+                      {/* Add images picker */}
                       <div style={{ marginTop: 10 }}>
+                        <label style={{ display: 'block', fontSize: 11.5, color: 'var(--muted)', marginBottom: 6 }}>
+                          Add image(s) — first image used as card thumbnail
+                        </label>
                         <input
                           type="file"
                           accept="image/*"
+                          multiple
                           onChange={async (e) => {
-                            const file = e.target.files?.[0]
-                            if (!file) return
+                            const files = Array.from(e.target.files ?? [])
+                            if (!files.length) return
                             try {
                               setBusy(true)
-                              const dataUrl = await fileToDataUrl(file)
+                              const dataUrls = await Promise.all(files.map(fileToDataUrl))
                               setDraft((prev) => {
                                 const next = [...(prev.projects ?? [])]
-                                next[idx] = { ...next[idx], image: dataUrl }
+                                const existing = next[idx].images?.length
+                                  ? next[idx].images
+                                  : next[idx].image
+                                  ? [next[idx].image]
+                                  : []
+                                const merged = [...existing, ...dataUrls]
+                                next[idx] = {
+                                  ...next[idx],
+                                  images: merged,
+                                  image: merged[0] ?? '',
+                                }
                                 return { ...prev, projects: next }
                               })
+                              e.target.value = ''
                             } catch {
-                              setError('Image upload failed. Try a smaller image.')
+                              setError('Image upload failed. Try smaller images.')
                             } finally {
                               setBusy(false)
                             }
@@ -485,7 +547,7 @@ export default function AdminPage() {
                   ...prev,
                   projects: [
                     ...(prev.projects ?? []),
-                    { id: makeId(), title: 'New Project', description: '', liveUrl: '#', repoUrl: '#', image: '', details: [], tags: ['UI'] },
+                    { id: makeId(), title: 'New Project', description: '', liveUrl: '#', repoUrl: '#', image: '', images: [], details: [], tags: ['UI'] },
                   ],
                 }))
               }
