@@ -15,9 +15,9 @@ function ImageCarousel({ images, title }) {
   if (!images || images.length === 0) return null
 
   return (
-    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
+    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Slides */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'rgba(10,10,15,0.55)', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', flexGrow: 1, minHeight: 320, background: 'rgba(10,10,15,0.55)', overflow: 'hidden' }}>
         {images.map((img, i) => (
           <img
             key={i}
