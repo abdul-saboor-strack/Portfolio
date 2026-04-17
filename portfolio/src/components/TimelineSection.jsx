@@ -89,15 +89,13 @@ export default function TimelineSection({ timeline }) {
                     data-id={item.id}
                     initial={{ opacity: 0, y: 18 }}
                     animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-                    transition={{ duration: 0.5, delay: isVisible ? i * 0.04 : 0 }}
+                    className="responsiveGrid"
                     style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(12, 1fr)',
                       gap: 14,
                       alignItems: 'start',
                     }}
                   >
-                    <div style={{ gridColumn: leftSide ? 'span 6' : 'span 6', justifySelf: leftSide ? 'end' : 'start' }}>
+                    <div className="responsiveCol-6" style={{ justifySelf: leftSide ? 'end' : 'start' }}>
                       <div
                         style={{
                           display: 'flex',
@@ -122,8 +120,8 @@ export default function TimelineSection({ timeline }) {
 
                     <div
                       aria-hidden="true"
+                      className="responsiveCol-1"
                       style={{
-                        gridColumn: 'span 1',
                         display: 'grid',
                         placeItems: 'center',
                         paddingTop: 4,
@@ -141,7 +139,7 @@ export default function TimelineSection({ timeline }) {
                       />
                     </div>
 
-                    <div style={{ gridColumn: leftSide ? 'span 5' : 'span 5' }} />
+                    <div className="responsiveCol-5" />
                   </Motion.div>
                 )
               })}

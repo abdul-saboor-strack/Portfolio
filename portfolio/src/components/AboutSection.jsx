@@ -100,21 +100,9 @@ export default function AboutSection({ about }) {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(12, 1fr)',
-            gap: 18,
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              gridColumn: 'span 5',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
+        <div className="responsiveGrid" style={{ gap: 18, alignItems: 'center' }}>
+          <div className="responsiveCol-5" style={{ display: 'flex', justifyContent: 'center' }}>
+
             <Motion.div
               ref={ref}
               className={`reveal ${isInView ? 'in' : ''}`}
@@ -127,11 +115,10 @@ export default function AboutSection({ about }) {
           </div>
 
           <Motion.div
-            className={`glass ${isInView ? 'reveal in' : 'reveal'}`}
+            className={`glass responsiveCol-7 ${isInView ? 'reveal in' : 'reveal'}`}
             initial={false}
             transition={{ duration: 0.6 }}
             style={{
-              gridColumn: 'span 7',
               padding: 22,
               display: 'flex',
               flexDirection: 'column',

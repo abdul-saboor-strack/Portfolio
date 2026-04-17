@@ -204,6 +204,63 @@ textarea {
   }
 }
 
+.responsiveGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.responsiveCol-1 {
+  grid-column: span 1;
+}
+
+.responsiveCol-5 {
+  grid-column: span 5;
+}
+
+.responsiveCol-6 {
+  grid-column: span 6;
+}
+
+.responsiveCol-7 {
+  grid-column: span 7;
+}
+
+.responsiveColFull {
+  grid-column: span 12;
+}
+
+@media (max-width: 768px) {
+  .responsiveGrid {
+    grid-template-columns: 1fr !important;
+  }
+  .responsiveCol-1,
+  .responsiveCol-5,
+  .responsiveCol-6,
+  .responsiveCol-7,
+  .responsiveColFull {
+    grid-column: auto !important;
+    width: 100% !important;
+  }
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .sectionHeader > div {
+    width: 100%;
+  }
+  .section {
+    padding: 64px 0;
+  }
+  .glass {
+    padding: 18px !important;
+  }
+  .glass2 {
+    padding: 16px !important;
+  }
+}
+
 .section {
   padding: 92px 0;
   position: relative;

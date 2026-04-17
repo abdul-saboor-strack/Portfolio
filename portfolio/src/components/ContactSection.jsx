@@ -67,8 +67,8 @@ export default function ContactSection({ contact, social }) {
         </div>
 
         <div className="glass" style={{ padding: 18 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 14, alignItems: 'start' }}>
-            <div style={{ gridColumn: 'span 7' }}>
+          <div className="responsiveGrid" style={{ alignItems: 'start' }}>
+            <div className="responsiveCol-7">
               <style>{`
                 .contactField:focus {
                   outline: none;
@@ -77,8 +77,8 @@ export default function ContactSection({ contact, social }) {
                 }
               `}</style>
               <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 12 }}>
-                  <div style={{ gridColumn: 'span 6' }}>
+                <div className="responsiveGrid">
+                  <div className="responsiveCol-6">
                     <label style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginBottom: 8 }}>Name</label>
                     <input
                       className="contactField"
@@ -95,7 +95,7 @@ export default function ContactSection({ contact, social }) {
                       }}
                     />
                   </div>
-                  <div style={{ gridColumn: 'span 6' }}>
+                  <div className="responsiveCol-6">
                     <label style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginBottom: 8 }}>Email</label>
                     <input
                       className="contactField"
@@ -161,7 +161,7 @@ export default function ContactSection({ contact, social }) {
               </form>
             </div>
 
-            <div style={{ gridColumn: 'span 5' }}>
+            <div className="responsiveCol-5">
               <div className="glass2" style={{ padding: 16 }}>
                 <div style={{ fontWeight: 900, fontFamily: 'Poppins,Orbitron,Inter,system-ui,sans-serif', fontSize: 16 }}>Social</div>
                 <div style={{ color: 'var(--muted)', marginTop: 8, lineHeight: 1.7, fontSize: 13.5 }}>
