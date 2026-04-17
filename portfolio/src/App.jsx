@@ -68,17 +68,8 @@ export default function App() {
         }}
       >
         <div className="container" style={{ pointerEvents: 'auto' }}>
-          <div
-            className="glass2"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '10px 12px',
-              gap: 12,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="glass2 headerBar">
+            <div className="headerBrand">
               <div
                 aria-hidden="true"
                 style={{
@@ -103,8 +94,7 @@ export default function App() {
                 {name}
               </button>
             </div>
-
-            <nav style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <nav className="headerNav" style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -124,7 +114,7 @@ export default function App() {
       </header>
 
       <ErrorBoundary>
-        <main style={{ paddingTop: 92 }}>
+        <main className="mainContent" style={{ paddingTop: 92 }}>
           <HeroSection name={name} headlinePhrases={headlinePhrases} onViewWork={() => scrollToId('projects')} />
           <AboutSection about={about} />
           <SkillsSection skills={skills} />
@@ -136,6 +126,6 @@ export default function App() {
       </ErrorBoundary>
 
       <ProjectModal project={selectedProject} isOpen={modalOpen} onClose={() => setSelectedProject(null)} />
-    </div>
+    </div >
   )
 }
