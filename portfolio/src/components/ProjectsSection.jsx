@@ -57,6 +57,9 @@ function ProjectTiltCard({ project, onOpen }) {
         position: 'relative',
         transform: 'translate3d(0,0,0) rotateX(0deg) rotateY(0deg)',
         willChange: 'transform',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <div
@@ -72,7 +75,7 @@ function ProjectTiltCard({ project, onOpen }) {
         className="projectGlow"
       />
 
-      <div style={{ padding: 14, position: 'relative', zIndex: 1 }}>
+      <div style={{ padding: 14, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         <div
           style={{
             borderRadius: 18,
@@ -91,7 +94,7 @@ function ProjectTiltCard({ project, onOpen }) {
           />
         </div>
 
-        <div style={{ padding: '14px 2px 6px' }}>
+        <div style={{ padding: '14px 2px 6px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <div
             style={{
               fontFamily: 'Poppins,Orbitron,Inter,system-ui,sans-serif',
@@ -103,7 +106,7 @@ function ProjectTiltCard({ project, onOpen }) {
           >
             {project.title}
           </div>
-          <div style={{ color: 'var(--muted)', lineHeight: 1.6, fontSize: 13.5, minHeight: 44 }}>
+          <div style={{ color: 'var(--muted)', lineHeight: 1.6, fontSize: 13.5, minHeight: 44, flexGrow: 1 }}>
             {project.description}
           </div>
 
@@ -185,6 +188,7 @@ export default function ProjectsSection({ projects, onOpenProject }) {
                 }}
                 transition={{ duration: 0.55, delay: isInView ? i * 0.06 : 0 }}
                 className="projectCard"
+                style={{ height: '100%' }}
               >
                 <ProjectTiltCard project={p} onOpen={onOpenProject} />
               </Motion.div>
