@@ -15,7 +15,7 @@ function ImageCarousel({ images, title }) {
   if (!images || images.length === 0) return null
 
   return (
-    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)', contain: 'layout' }}>
+    <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
       {/* Slides */}
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'rgba(10,10,15,0.55)', overflow: 'hidden' }}>
         {images.map((img, i) => (
@@ -141,14 +141,15 @@ function ImageCarousel({ images, title }) {
               aria-label={`Go to image ${i + 1}`}
               onClick={() => setActive(i)}
               style={{
-                width: i === active ? 20 : 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: 999,
                 background: i === active ? 'rgba(0,240,255,0.9)' : 'rgba(255,255,255,0.28)',
                 border: 'none',
                 cursor: 'pointer',
                 padding: 0,
-                transition: reduced ? 'none' : 'width 200ms ease, background 200ms ease',
+                transform: i === active ? 'scale(1.6)' : 'scale(1)',
+                transition: reduced ? 'none' : 'transform 200ms ease, background 200ms ease',
               }}
             />
           ))}
