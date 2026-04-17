@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import emailjs from '@emailjs/browser'
 
 function SocialIcon({ type }) {
   const common = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }
@@ -44,7 +45,7 @@ export default function ContactSection({ contact, social }) {
     return null
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     const err = validate()
     if (err) {
@@ -52,8 +53,29 @@ export default function ContactSection({ contact, social }) {
       return
     }
 
-    setStatus({ ok: true, text: 'Message prepared. (Demo form: no backend connected.)' })
-    setForm({ name: '', email: '', message: '' })
+    setStatus({ ok: true, text: 'Sending message...' })
+
+    try {
+      // Replace these with your EmailJS service details
+      const serviceId = 'your_service_id'
+      const templateId = 'your_template_id'
+      const publicKey = 'your_public_key'
+
+      const templateParams = {
+        from_name: form.name,
+        from_email: form.email,
+        message: form.message,
+        to_email: contact?.email || 'your-email@example.com',
+      }
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+
+      setStatus({ ok: true, text: 'Message sent successfully!' })
+      setForm({ name: '', email: '', message: '' })
+    } catch (error) {
+      console.error('Email send error:', error)
+      setStatus({ ok: false, text: 'Failed to send message. Please try again.' })
+    }
   }
 
   return (
