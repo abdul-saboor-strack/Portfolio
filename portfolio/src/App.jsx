@@ -31,11 +31,28 @@ export default function App() {
   const { name, headlinePhrases, about, skills, projects, timeline, contact, social } = data
 
   const modalOpen = Boolean(selectedProject)
+  const [headerHidden, setHeaderHidden] = useState(false)
 
   useEffect(() => {
     if (isAdmin) return
     document.title = `${name} | Portfolio`
   }, [name, isAdmin])
+
+  useEffect(() => {
+    if (isAdmin) return
+    let lastScrollY = window.scrollY
+    const onScroll = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setHeaderHidden(true)
+      } else if (currentScrollY < lastScrollY) {
+        setHeaderHidden(false)
+      }
+      lastScrollY = currentScrollY
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [isAdmin])
 
   const navItems = useMemo(
     () => [
@@ -58,6 +75,7 @@ export default function App() {
       <NeonBackground />
 
       <header
+        className={headerHidden ? 'headerHidden' : ''}
         style={{
           position: 'fixed',
           top: 14,
@@ -65,6 +83,8 @@ export default function App() {
           right: 0,
           zIndex: 10,
           pointerEvents: 'none',
+          transition: 'transform 220ms ease',
+          transform: headerHidden ? 'translateY(-140%)' : 'translateY(0)',
         }}
       >
         <div className="container" style={{ pointerEvents: 'auto' }}>
