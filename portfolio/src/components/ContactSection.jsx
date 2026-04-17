@@ -38,7 +38,6 @@ function SocialIcon({ type }) {
 export default function ContactSection({ contact, social }) {
   const reduced = usePrefersReducedMotion()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState(null)
   const [sending, setSending] = useState(false)
 
   const socials = useMemo(() => social ?? [], [social])
@@ -58,17 +57,14 @@ export default function ContactSection({ contact, social }) {
 
     const err = validate()
     if (err) {
-      setStatus({ ok: false, text: err })
       return
     }
 
     if (!emailJsConfig.serviceId || !emailJsConfig.templateId || !emailJsConfig.publicKey) {
-      setStatus({ ok: false, text: 'Email service is not configured yet. Please add EmailJS keys.' })
       return
     }
 
     setSending(true)
-    setStatus({ ok: true, text: 'Sending message...' })
 
     try {
       const templateParams = {
@@ -85,11 +81,9 @@ export default function ContactSection({ contact, social }) {
         emailJsConfig.publicKey,
       )
 
-      setStatus({ ok: true, text: 'Message sent successfully!' })
       setForm({ name: '', email: '', message: '' })
     } catch (error) {
       console.error('Email send error:', error)
-      setStatus({ ok: false, text: 'Failed to send message. Please try again.' })
     } finally {
       setSending(false)
     }
@@ -187,18 +181,8 @@ export default function ContactSection({ contact, social }) {
                       transition: reduced ? 'none' : undefined,
                     }}
                   >
-                    {sending ? 'Sending...' : 'Send Message'}
+                    Send Message
                   </button>
-                  <div
-                    aria-live="polite"
-                    style={{
-                      color: status?.ok ? 'rgba(0,240,255,0.95)' : 'rgba(255,120,120,0.95)',
-                      fontWeight: 800,
-                      fontSize: 13,
-                    }}
-                  >
-                    {status ? status.text : ' '}
-                  </div>
                 </div>
               </form>
             </div>
