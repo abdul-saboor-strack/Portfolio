@@ -32,39 +32,40 @@ export default function AdminPage() {
 
   useEffect(() => setDraft(portfolioData), [portfolioData])
 
-  const [auth, setAuth] = useState(() => sessionStorage.getItem(AUTH_SESSION_KEY) === '1')
-  const [storedPassword, setStoredPassword] = useState(() => window.localStorage.getItem(PASSWORD_KEY) || '')
+  const [auth, setAuth] = useState(() => Boolean(sessionStorage.getItem(AUTH_SESSION_KEY)))
   const [passInput, setPassInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [showExport, setShowExport] = useState(false)
 
-  const hasPassword = Boolean(storedPassword)
-
-  const onAuthenticate = () => {
+  const onAuthenticate = async () => {
     setError('')
     if (!passInput) {
       setError('Enter a password.')
       return
     }
 
-    if (!hasPassword) {
-      window.localStorage.setItem(PASSWORD_KEY, passInput)
-      setStoredPassword(passInput)
-      sessionStorage.setItem(AUTH_SESSION_KEY, '1')
+    setBusy(true)
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passInput })
+      })
+      const body = await res.json()
+
+      if (!res.ok) {
+        setError(body.error || 'Authentication failed.')
+        return
+      }
+
+      sessionStorage.setItem(AUTH_SESSION_KEY, passInput)
       setAuth(true)
       setPassInput('')
-      return
+    } catch (e) {
+      setError('Failed to reach authentication server.')
+    } finally {
+      setBusy(false)
     }
-
-    if (passInput !== storedPassword) {
-      setError('Incorrect password.')
-      return
-    }
-
-    sessionStorage.setItem(AUTH_SESSION_KEY, '1')
-    setAuth(true)
-    setPassInput('')
   }
 
   const onLogout = () => {
@@ -78,11 +79,24 @@ export default function AdminPage() {
     setError('')
     setBusy(true)
     try {
-      saveOverrides(draft)
-      // Auto-sync to codebase if running locally
-      try {
-        await fetch('/api/save-data', { method: 'POST', body: JSON.stringify(draft) })
-      } catch (e) {}
+      saveOverrides(draft) // Update preview locally
+      const storedPass = sessionStorage.getItem(AUTH_SESSION_KEY)
+      
+      const res = await fetch('/api/publish', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: storedPass, data: draft }) 
+      })
+      const body = await res.json()
+
+      if (!res.ok) {
+        setError(body.error || 'Failed to save to server.')
+        return
+      }
+
+      alert('Successfully published to GitHub! Changes will be live in 1-2 minutes automatically.')
+    } catch (e) {
+      setError('Failed to reach publishing server.')
     } finally {
       window.setTimeout(() => setBusy(false), 150)
     }
@@ -111,7 +125,7 @@ export default function AdminPage() {
             </div>
 
             <div style={{ marginTop: 14, color: 'var(--muted)', lineHeight: 1.7 }}>
-              {hasPassword ? 'Enter your admin password to edit your data and upload images.' : 'Set an admin password first. Stored locally in your browser.'}
+              Enter your live admin password to securely edit your data and publish to GitHub.
             </div>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 14, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -130,7 +144,7 @@ export default function AdminPage() {
                 }}
               />
               <button type="button" className="btn" onClick={onAuthenticate} disabled={busy} style={{ padding: '12px 16px', borderRadius: 14, fontWeight: 900 }}>
-                {hasPassword ? 'Unlock' : 'Set Password'}
+                {busy ? 'Verifying...' : 'Unlock Server'}
               </button>
             </div>
 
@@ -139,7 +153,7 @@ export default function AdminPage() {
             ) : null}
 
             <div style={{ marginTop: 12, color: 'var(--muted)', fontSize: 12.5, lineHeight: 1.6 }}>
-              Note: this is frontend-only. Images are stored in `localStorage` (data URLs).
+              Note: This dashboard requires the ADMIN_PASSWORD environment variable to be configured on your server deployment.
             </div>
           </div>
         </div>
@@ -606,48 +620,16 @@ export default function AdminPage() {
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap', marginTop: 18 }}>
             <button
               type="button"
-              className="btn btnSecondary"
-              onClick={() => setShowExport(true)}
-              style={{ padding: '12px 16px', borderRadius: 14, fontWeight: 900 }}
-            >
-              Export siteData.js
-            </button>
-            <button
-              type="button"
               className="btn"
               onClick={onSave}
               disabled={busy}
-              style={{ padding: '12px 16px', borderRadius: 14, fontWeight: 900 }}
+              style={{ padding: '12px 24px', borderRadius: 14, fontWeight: 900 }}
             >
-              {busy ? 'Saving...' : 'Save changes (Local Preview)'}
+              {busy ? 'Publishing Commit...' : 'Publish to GitHub'}
             </button>
           </div>
         </div>
       </div>
-
-      {showExport && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 999, display: 'grid', placeItems: 'center', padding: 18, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}>
-          <div className="glass neonBorder" style={{ width: 'min(700px, 100%)', padding: 24, borderRadius: 20, display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
-            <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 12 }}>Export your data</div>
-            <p style={{ color: 'var(--muted)', fontSize: 13.5, marginBottom: 16 }}>
-              The admin panel only saves preview data in this browser. To make the changes live for everyone (including on mobile), copy the code below and completely replace the contents of your <code>src/content/siteData.js</code> file, then push it to GitHub.
-            </p>
-            <textarea
-              readOnly
-              value={`export const siteData = ${JSON.stringify(draft, null, 2)};`}
-              style={{
-                width: '100%', flexGrow: 1, minHeight: 250, padding: 12, borderRadius: 12,
-                border: '1px solid rgba(255,255,255,0.12)', background: '#111', color: '#00f0ff',
-                fontFamily: 'monospace', fontSize: 12, resize: 'none', marginBottom: 16
-              }}
-              onFocus={(e) => e.target.select()}
-            />
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button className="btn" onClick={() => setShowExport(false)} style={{ padding: '10px 16px' }}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
