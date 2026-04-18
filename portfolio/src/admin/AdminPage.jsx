@@ -74,11 +74,15 @@ export default function AdminPage() {
     setPassInput('')
   }
 
-  const onSave = () => {
+  const onSave = async () => {
     setError('')
     setBusy(true)
     try {
       saveOverrides(draft)
+      // Auto-sync to codebase if running locally
+      try {
+        await fetch('/api/save-data', { method: 'POST', body: JSON.stringify(draft) })
+      } catch (e) {}
     } finally {
       window.setTimeout(() => setBusy(false), 150)
     }
