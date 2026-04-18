@@ -29,11 +29,11 @@ export const siteData = {
   projects: [
     {
       id: 'ecommerce',
-      title: 'E-commerce Website',
-      description: 'A full-featured e-commerce web application with product listings and user interaction.',
-      image: 'https://placehold.co/1200x800/00f0ff/000000?text=E-commerce+Project',
-      images: ['https://placehold.co/1200x800/00f0ff/000000?text=E-commerce+Project'],
-      repoUrl: '#', // yahan GitHub link daalna
+      title: 'FS 5 Collection',
+      description: 'A fully functional e-commerce website designed to provide a seamless online shopping experience. Users can browse products by categories, search and filter items, and view detailed product information. The platform includes a secure authentication system, shopping cart, and order management features. An advanced admin panel allows administrators to manage products, categories, orders, and customers efficiently, along with real-time analytics and performance tracking. The website is responsive, user-friendly, and optimized for smooth navigation and secure transactions.',
+      image: 'https://placehold.co/1200x800/00f0ff/000000?text=FS+5+Collection',
+      images: ['https://placehold.co/1200x800/00f0ff/000000?text=FS+5+Collection'],
+      repoUrl: '#',
       details: [
         'Built using React and modern JavaScript',
         'Responsive design for mobile and desktop',
@@ -43,15 +43,15 @@ export const siteData = {
     },
     {
       id: 'hospital-system',
-      title: 'Hospital Management System',
-      description: 'A DSA-based system for managing hospital operations and records.',
-      image: 'https://placehold.co/1200x800/8a2be2/ffffff?text=Hospital+System',
-      images: ['https://placehold.co/1200x800/8a2be2/ffffff?text=Hospital+System'],
+      title: 'Smart Quiz Management System',
+      description: 'A user-friendly online platform where students can take quizzes and teachers can create, manage, and evaluate them. It includes secure login, teacher tools, and a built-in timer to ensure fair and efficient assessments.',
+      image: 'https://placehold.co/1200x800/8a2be2/ffffff?text=Smart+Quiz',
+      images: ['https://placehold.co/1200x800/8a2be2/ffffff?text=Smart+Quiz'],
       repoUrl: '#',
       details: [
         'Implemented using Java',
         'Used Data Structures for efficient data handling',
-        'Manages patient and hospital records',
+        'Secure login and teacher tools',
       ],
       tags: ['Java', 'DSA'],
     },
