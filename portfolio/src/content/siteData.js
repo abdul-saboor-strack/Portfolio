@@ -118,13 +118,13 @@ export const siteData = {
     {
       "id": "github",
       "label": "GitHub",
-      "href": "https://github.com/yourusername",
+      "href": "https://github.com/abdul-saboor-strack",
       "icon": "github"
     },
     {
       "id": "linkedin",
       "label": "LinkedIn",
-      "href": "https://linkedin.com/in/yourprofile",
+      "href": "https://www.linkedin.com/in/abdul-saboor-abbasi?utm_source=share&utm_campaign=share_via&utm_content=profile",
       "icon": "linkedin"
     }
   ]
