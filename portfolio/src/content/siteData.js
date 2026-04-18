@@ -31,8 +31,8 @@ export const siteData = {
       id: 'ecommerce',
       title: 'E-commerce Website',
       description: 'A full-featured e-commerce web application with product listings and user interaction.',
-      image: 'https://via.placeholder.com/1200x800/00f0ff/000000?text=E-commerce+Project',
-      images: ['https://via.placeholder.com/1200x800/00f0ff/000000?text=E-commerce+Project'],
+      image: 'https://placehold.co/1200x800/00f0ff/000000?text=E-commerce+Project',
+      images: ['https://placehold.co/1200x800/00f0ff/000000?text=E-commerce+Project'],
       repoUrl: '#', // yahan GitHub link daalna
       details: [
         'Built using React and modern JavaScript',
@@ -45,8 +45,8 @@ export const siteData = {
       id: 'hospital-system',
       title: 'Hospital Management System',
       description: 'A DSA-based system for managing hospital operations and records.',
-      image: 'https://via.placeholder.com/1200x800/8a2be2/ffffff?text=Hospital+System',
-      images: ['https://via.placeholder.com/1200x800/8a2be2/ffffff?text=Hospital+System'],
+      image: 'https://placehold.co/1200x800/8a2be2/ffffff?text=Hospital+System',
+      images: ['https://placehold.co/1200x800/8a2be2/ffffff?text=Hospital+System'],
       repoUrl: '#',
       details: [
         'Implemented using Java',
